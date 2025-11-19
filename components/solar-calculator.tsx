@@ -1,15 +1,5 @@
 "use client"
-import dynamic from "next/dynamic"
 import { useMemo, useState } from "react"
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, ChartOptions } from "chart.js"
-
-const isClient = typeof window !== "undefined"
-if (isClient) {
-  ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend)
-}
-
-const Line = dynamic(() => import("react-chartjs-2").then((m) => m.Line), { ssr: false })
-const Bar = dynamic(() => import("react-chartjs-2").then((m) => m.Bar), { ssr: false })
 
 const BASE_MONTHLY_KWH_PER_M2: Record<string, number> = {
   Jan: 10.9, Feb: 16.3, Mar: 24.5, Apr: 29.9, May: 32.6, Jun: 35.4,
@@ -81,60 +71,6 @@ export function SolarCalculator() {
   const monthlySavings = (yearly * electricityPrice) / 12
   const selfConsumptionRate = Math.min(100, (consumptionMonth * 12 / yearly) * 100)
   const paybackYears = capex / ((yearly * electricityPrice) - maintYear)
-
-  const barData = useMemo(() => {
-    return {
-      labels: MONTH_ORDER,
-      datasets: [
-        {
-          label: "kWh",
-          data: MONTH_ORDER.map((m) => monthly[m]),
-          backgroundColor: "rgba(26, 120, 50, 0.6)",
-        },
-      ],
-    }
-  }, [monthly])
-
-  const lineData = useMemo(() => {
-    const cash = Array.from({ length: 10 }, (_, i) => {
-      const year = i + 1
-      const savings = yearly * electricityPrice * year
-      const maintenance = maintYear * year
-      const invested = Math.min(capex, (capex / capexYears) * year)
-      return savings - maintenance - invested
-    })
-    return {
-      labels: Array.from({ length: 10 }, (_, i) => `${i + 1}`),
-      datasets: [
-        {
-          label: "Cashflow (AZN)",
-          data: cash,
-          borderColor: "rgba(26, 67, 10, 1)",
-          fill: false,
-          tension: 0.3,
-        },
-      ],
-    }
-  }, [yearly, capex, capexYears, maintYear, electricityPrice])
-
-  const chartOptions: ChartOptions<"bar" | "line"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { mode: "index" as const, intersect: false },
-    },
-    scales: {
-      x: {
-        grid: { color: "rgba(0,0,0,0.05)" },
-        ticks: { color: "#2d4d2d" }
-      },
-      y: {
-        grid: { color: "rgba(0,0,0,0.05)" },
-        ticks: { color: "#2d4d2d" }
-      },
-    },
-  }
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-6 bg-white">
@@ -309,19 +245,17 @@ export function SolarCalculator() {
 
         <div className="bg-[#f6fff6] border border-[#d7f5d7] rounded-xl p-4">
           <div className="text-sm font-semibold text-[rgba(26,67,10,1)] mb-2">
-            Aylıq PV İstehsal Qrafiki
+            Aylıq PV İstehsal Məlumatları
           </div>
-          <div className="h-56">
-            <Bar data={barData as any} options={chartOptions} />
-          </div>
-        </div>
-
-        <div className="bg-[#f6fff6] border border-[#d7f5d7] rounded-xl p-4">
-          <div className="text-sm font-semibold text-[rgba(26,67,10,1)] mb-2">
-            10 İllik Cashflow & Payback
-          </div>
-          <div className="h-44">
-            <Line data={lineData as any} options={chartOptions} />
+          <div className="grid grid-cols-4 gap-2">
+            {MONTH_ORDER.map((m) => (
+              <div key={m} className="bg-white p-2 rounded border border-[#d7f5d7] text-center">
+                <div className="text-xs text-[#4c6b4c]">{m}</div>
+                <div className="text-sm font-bold text-[rgba(26,67,10,1)]">
+                  {toFixedClean(monthly[m], 0)}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
