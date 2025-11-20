@@ -39,17 +39,17 @@ export default function Home() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
 
             {/* LOGIN BUTTON — added */}
-            <Button asChild>
-              <Link href="/login" className="bg-yellow-500 hover:bg-yellow-400 text-black">
+            <Button asChild size="sm" className="md:h-10">
+              <Link href="/login" className="bg-yellow-500 hover:bg-yellow-500 text-black text-xs md:text-sm px-3 md:px-4">
                 Login
               </Link>
             </Button>
 
-            <Button asChild>
-              <Link href="/dashboard" className="bg-black hover:bg-yellow-400">
+            <Button asChild size="sm" className="md:h-10">
+              <Link href="/dashboard" className="bg-black hover:bg-yellow-500 text-xs md:text-sm px-3 md:px-4">
                 View Dashboard
               </Link>
             </Button>

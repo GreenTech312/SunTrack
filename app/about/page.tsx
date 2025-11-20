@@ -163,11 +163,7 @@ export default function About() {
                   <div>
                     <h3 className="font-bold mb-1" style={{ color: "rgba(26,67,10)" }}>Address</h3>
                     <p className="text-gray-600">
-                      123 Solar Way
-                      <br />
-                      Sunnyvale, CA 94086
-                      <br />
-                      United States
+                     Baku, Azerbaijan
                     </p>
                   </div>
                 </div>
@@ -177,9 +173,7 @@ export default function About() {
                   <div>
                     <h3 className="font-bold mb-1" style={{ color: "rgba(26,67,10)" }}>Email</h3>
                     <p className="text-gray-600">
-                      info@suntrack.example
-                      <br />
-                      support@suntrack.example
+                       suntrackbiz@gmail.com 
                     </p>
                   </div>
                 </div>
@@ -189,9 +183,7 @@ export default function About() {
                   <div>
                     <h3 className="font-bold mb-1" style={{ color: "rgba(26,67,10)" }}>Phone</h3>
                     <p className="text-gray-600">
-                      +1 (555) 123-4567
-                      <br />
-                      Mon-Fri, 9am-5pm PT
+                      +994507772425
                     </p>
                   </div>
                 </div>
